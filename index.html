@@ -1,214 +1,272 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mahipat-X-Service</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Image MB to KB Converter</title>
   <style>
-    /* General Styles */
+    :root {
+      --bg: #f3f4f6;
+      --text: #1f2937;
+      --card: #ffffff;
+      --primary: #3b82f6;
+      --accent: #6366f1;
+    }
+    * {
+      box-sizing: border-box;
+      transition: 0.3s;
+    }
     body {
-      font-family: Arial, sans-serif;
       margin: 0;
-      padding: 0;
-      line-height: 1.6;
-      color: #333;
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
     }
-    h1, h2, h3 {
-      margin: 0;
-    }
-    .container {
-      width: 80%;
-      margin: auto;
-      overflow: hidden;
-    }
-
-    /* Header */
-    .header {
-      background: #007bff;
-      color: #fff;
-      text-align: center;
-      padding: 60px 20px;
-    }
-    .header h1 {
-      font-size: 2.5rem;
-    }
-    .header p{
-      margin: 10px 0 20px;
-      font-size: 1.2rem;
-    }
-    .header button {
-      text-decoration: none;
-      color: #333;
-      background: #ffc107;
-      padding: 10px 20px;
-      border-radius: 5px;
-    }
-    .header a:hover {
-      background: #e0a800;
-    }
-
-    /* About Section */
-    .about {
-      padding: 40px 20px;
-      background: #f4f4f4;
-      text-align: center;
-    }
-
-    /* Services Section */
-    .services {
-      padding: 40px 20px;
-    }
-    .services h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    .service-grid {
+    header {
+      background: var(--card);
+      padding: 12px 20px;
       display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      justify-content: center;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
-    .service-card {
-      background: #fff;
-      padding: 20px;
-      border-radius: 5px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      text-align: center;
-      width: 300px;
+    header img {
+      height: 40px;
     }
-    .service-card h3 {
-      margin-bottom: 10px;
-    }
-
-    /* Contact Section */
-    .contact {
-      padding: 40px 20px;
-      background: #f4f4f4;
-    }
-    .contact h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    .contact form {
-      max-width: 600px;
-      margin: auto;
-    }
-    .contact input, .contact textarea {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 10px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-    }
-    .contact button {
-      background: #007bff;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
+    .whatsapp-icon {
+      width: 36px;
       cursor: pointer;
     }
-    .contact button:hover {
-      background: #0056b3;
-    }
-
-    /* Footer */
-    .footer {
-      background: #333;
-      color: white;
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: var(--card);
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.06);
       text-align: center;
-      padding: 10px 20px;
+    }
+    h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    .dropzone {
+      border: 2px dashed var(--primary);
+      border-radius: 12px;
+      padding: 30px;
+      background: #eff6ff;
+      cursor: pointer;
+    }
+    .dropzone:hover {
+      background: #dbeafe;
+    }
+    input[type="number"] {
+      margin-top: 20px;
+      padding: 10px;
+      width: 80%;
+      max-width: 250px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    .download-btn {
+      background: linear-gradient(to right, var(--primary), var(--accent));
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
       margin-top: 20px;
     }
-
-    /* Mobile View */
-    @media screen and (max-width: 768px) {
-      .header h1 {
-        font-size: 2rem;
-      }
-      .service-grid {
-        flex-direction: column;
-        align-items: center;
-      }
-      .service-card {
-        width: 90%;
-      }
+    .download-btn:hover {
+      opacity: 0.9;
+    }
+    .preview {
+      margin-top: 20px;
+      max-width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      display: none;
+    }
+    .progress {
+      margin-top: 20px;
+      height: 12px;
+      background: #e5e7eb;
+      border-radius: 6px;
+      overflow: hidden;
+      display: none;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: var(--primary);
+    }
+    .loader {
+      margin-top: 20px;
+      display: none;
+    }
+    .loader:after {
+      content: "Loading...";
+      display: inline-block;
+      color: var(--primary);
+      font-weight: bold;
+      animation: blink 1s infinite;
+    }
+    @keyframes blink {
+      50% { opacity: 0.3; }
+    }
+    footer {
+      background: #e5e7eb;
+      padding: 50px 20px;
+      text-align: center;
+      margin-top: 40px;
+    }
+    .social-icons {
+      margin-top: 16px;
+    }
+    .social-icons img {
+      width: 36px;
+      margin: 0 12px;
+      vertical-align: middle;
+    }
+    .floating-icons {
+      position: fixed;
+      right: 15px;
+      bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 999;
+    }
+    .floating-icons img {
+      width: 45px;
+      border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
     }
   </style>
 </head>
 <body>
+  <!-- Popup -->
+  <div id="popup" style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:999;">
+    <img src="mp.jpg" alt="Popup Logo" style="width:120px;border-radius:16px;">
+  </div>
+
   <!-- Header -->
-  <header class="header">
-    <h1>Welcome to Mahipat-X-Service</h1>
-    <p>Your trusted partner for professional services</p>
-    <button onclick="document.location='https://www.instagram.com/mahipat_suthar_09?utm_source=qr&igsh=aGJjMW04cW10MDA4'" >Follow more.</button> </a>
+  <header>
+    <img src="mpde.png" alt="Navbar Logo">
+    <a href="https://wa.me/916356952788?text=Hello!%20I%20visited%20your%20Image%20Converter%20website%20and%20need%20help." target="_blank">
+      <img src="https://cdn-icons-png.flaticon.com/512/733/733641.png" alt="WhatsApp" class="whatsapp-icon">
+    </a>
   </header>
 
-  <!-- About Section -->
-  <section class="about">
-    <h2>About Us</h2>
-    <p>
-      At Mahipat-X-Service, we provide top-notch services to meet your needs. Our team of experts is dedicated to delivering quality solutions tailored to your requirements.
-    </p>
-  </section>
-
-  <!-- Services Section -->
-  <section class="services" id="services">
-    <h2>Our Services</h2>
-    <div class="service-grid">
-      <div class="service-card">
-        <h3>Online & Error</h3>
-        <p>"Online services ensure seamless connectivity, but errors can disrupt the experience. Effective troubleshooting is key to maintaining smooth operations"</p>
-      </div>
-      <div class="service-card">
-        <h3>Delete & Recovery</h3>
-        <p>
-Deleting data removes it temporarily, but recovery tools can often restore lost files. Always back up important information to avoid permanent loss.</p>
-      </div>
-      <div class="service-card">
-        <h3>editing</h3>
-        <p> editing whos contact now.</p>
-      </div>
+  <!-- Main Section -->
+  <div class="container">
+    <h2>Image MB to KB Converter</h2>
+    <div class="dropzone" onclick="fileInput.click()" ondragover="event.preventDefault()" ondrop="handleDrop(event)">
+      Click to Upload Image
     </div>
-  </section>
-
-  <!-- Contact Section -->
-  <section class="contact" id="contact">
-    <h2>Contact Us</h2>
-    <form id="contactForm">
-      <input type="text" id="name" placeholder="Your Name" required>
-      <input type="email" id="email" placeholder="Your Email" required>
-      <textarea id="message" placeholder="Your Message" rows="5" required></textarea>
-      <button type="submit">Send Message</button>
-    </form>
-  </section>
+    <input type="file" id="fileInput" accept="image/*" hidden onchange="handleFile(this.files[0])">
+    <input type="number" id="targetKB" placeholder="Target size in KB (e.g., 100)">
+    <img id="preview" class="preview" />
+    <button class="download-btn" onclick="compressImage()">Download Compressed Image</button>
+    <div class="loader" id="loader"></div>
+    <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+  </div>
 
   <!-- Footer -->
-  <footer class="footer">
-    <p>&copy; 2025 Mahipat-X-Service. All rights reserved.</p>
+  <footer>
+    <p>© 2025 Image Converter | All Rights Reserved</p>
+    <div class="social-icons">
+      <a href="https://www.instagram.com/mahipat_suthar_09?igsh=aGJjMW04cW10MDA4" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram">
+      </a>
+      <a href="https://youtube.com/@mahipatsuthar-e3h?si=jD6g0TfZSAw_TQ7e" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/3670/3670151.png" alt="YouTube">
+      </a>
+      <a href="https://x.com/mahipat_suthar_?t=JGamVHtF1Ld7EYNmj61UpA&s=09" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/733/733635.png" alt="Twitter">
+      </a>
+    </div>
   </footer>
 
+
+
+  <!-- JavaScript -->
   <script>
-    // Contact Form Submission
-    document.getElementById('contactForm').addEventListener('submit', function(e) {
+    let uploadedImage = null;
+    const preview = document.getElementById("preview");
+    const progressBar = document.getElementById("progressBar");
+    const loader = document.getElementById("loader");
+
+    // Hide popup on load
+    window.onload = () => {
+      setTimeout(() => {
+        document.getElementById("popup").style.display = "none";
+      }, 1500);
+    };
+
+    function handleDrop(e) {
       e.preventDefault();
-      const name = document.getElementById('name').value;
-      const email = document.getElementById('email').value;
-      const message = document.getElementById('message').value;
+      handleFile(e.dataTransfer.files[0]);
+    }
 
-      if (name && email && message) {
-        const whatsappMessage = encodeURIComponent(`*New message from Mahipat-X-Service*\n\nName: ${name}\nEmail: ${email}\nMessage: ${message}`);
-        const whatsappNumber = '7228989559'; // Replace with the actual WhatsApp number
-
-        // Open WhatsApp with pre-filled message
-        window.open(`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`, '_blank');
-
-        alert(`Thank you, ${name}! We have received your message.`);
-        document.getElementById('contactForm').reset();
-      } else {
-        alert('Please fill out all fields.');
+    function handleFile(file) {
+      if (!file.type.startsWith("image/")) {
+        alert("Only image files allowed!");
+        return;
       }
-    });
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        uploadedImage = e.target.result;
+        preview.src = uploadedImage;
+        preview.style.display = "block";
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function compressImage() {
+      const targetKB = parseInt(document.getElementById("targetKB").value);
+      if (!uploadedImage || !targetKB) {
+        alert("Please upload image and enter target size.");
+        return;
+      }
+
+      const img = new Image();
+      img.src = uploadedImage;
+      loader.style.display = "block";
+      document.querySelector(".progress").style.display = "block";
+
+      img.onload = function () {
+        const canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+
+        let quality = 0.9;
+
+        function step() {
+          const dataUrl = canvas.toDataURL("image/jpeg", quality);
+          const sizeKB = Math.round((dataUrl.length * 3 / 4) / 1024);
+          progressBar.style.width = `${(1 - quality) * 100}%`;
+
+          if (sizeKB <= targetKB || quality < 0.1) {
+            const a = document.createElement("a");
+            a.href = dataUrl;
+            a.download = "compressed.jpg";
+            a.click();
+            progressBar.style.width = "0%";
+            loader.style.display = "none";
+            document.querySelector(".progress").style.display = "none";
+          } else {
+            quality -= 0.05;
+            setTimeout(step, 100);
+          }
+        }
+
+        step();
+      };
+    }
   </script>
 </body>
 </html>
